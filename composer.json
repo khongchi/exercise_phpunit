@@ -1,0 +1,19 @@
+{
+  "name": "khongchi/phpunit_test",
+  "authors": [
+    {
+      "name": "khongchi",
+      "email": "sungbum00@gmail.com"
+    }
+  ],
+  "require": {
+    "phpunit/phpunit": "~4.0",
+    "mockery/mockery": "dev-master@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Khongchi\\Src\\": "src",
+      "Khongchi\\Tests\\": "tests"
+    }
+  }
+}
