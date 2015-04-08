@@ -30,7 +30,7 @@ class UserRepositoryTest extends \PHPUnit_Framework_TestCase {
         $repository = new UserRepository($encryptor);
 
         $user = \Mockery::mock('Khongchi\Src\User', [
-            'getId' => 1,
+            'getId' => 'khongchi',
         ]);
 
         $repository->insert($user);
@@ -49,7 +49,7 @@ class UserRepositoryTest extends \PHPUnit_Framework_TestCase {
     public function testInsertDuplicated($repository)
     {
         $user = \Mockery::mock('Khongchi\Src\User', [
-            'getId' => 1,
+            'getId' => 'khongchi',
         ]);
 
         $repository->insert($user);
@@ -60,9 +60,9 @@ class UserRepositoryTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGet($repository)
     {
-        $searchedUser = $repository->get(1);
+        $searchedUser = $repository->get('khongchi');
 
-        $this->assertEquals(1, $searchedUser->getId());
+        $this->assertEquals('khongchi', $searchedUser->getId());
     }
 
     public function testEncrypt()

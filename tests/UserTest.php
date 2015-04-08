@@ -13,51 +13,61 @@ class UserTest extends \PHPUnit_Framework_TestCase
             'encryptPassword' => 'encryptedPassword'
         ]);
 
-        $user = new User($repository, 1, 'originPassword', 'khongchi', 19);
+        $user = new User($repository, 'khongchi', 'originPassword', 'sungbum', 19);
 
         $this->assertInstanceOf(User::class, $user);
     }
 
-    public function testIsAdult()
+    /**
+     * @dataProvider provideValidIds
+     */
+    public function testCreateWithValidateId($id)
     {
         $repository = \Mockery::mock('Khongchi\Src\UserRepository', [
             'encryptPassword' => 'encryptedPassword'
         ]);
 
-        $user = new User($repository, 1, 'originPassword', 'khongchi', 19);
-
-        $this->assertFalse($user->isAdult());
-
-        $userTwo = new User($repository, 1, 'originPassword', 'khongchi', 30);
-
-        $this->assertTrue($userTwo->isAdult());
+        $user = new User($repository, $id, 'originPassword', 'khongchi', 19);
     }
 
-    public function provideValidUsers()
+    public function provideValidIds()
     {
         return [
-            [1, 'p1', 'khongchi', 19],
-            [2, 'p1', 'khongchi', 19],
-            [3, 'p1', 'khongchi', 19],
-            [4, 'p1', 'khongchi', 19],
-            [5, 'p1', 'khongchi', 19],
+            ['khongchi'],
+            ['khongchi12'],
+            ['khon12gchi'],
+            ['khong_chi'],
         ];
     }
 
     /**
-     * testCreateWithProvider
-     *
-     * @dataProvider provideValidUsers
+     * @dataProvider provideInvalidIds
      */
-    public function testCreateWithValidProvider($id, $pw, $name, $age, $desc = '')
+    public function testCreateWithInvalidateId($id)
     {
         $repository = \Mockery::mock('Khongchi\Src\UserRepository', [
             'encryptPassword' => 'encryptedPassword'
         ]);
 
-        $user = new User($repository, $id, $pw, $name, $age, $desc);
+        try {
+            $user = new User($repository, $id, 'originPassword', 'khongchi', 19);
+        } catch (\Exception $e) {
+            $this->assertTrue(true);
+            return;
+        }
 
-        $this->assertInstanceOf(User::class, $user);
+        $this->assertFalse(true);
+    }
+
+    public function provideInvalidIds()
+    {
+        return [
+            [':khongchi'],
+            ['1khongchi'],
+            ['_khongchi'],
+            ['kho::ngchi'],
+            ['Khongchi'],
+        ];
     }
 
 }

@@ -1,10 +1,12 @@
 <?php
 namespace Khongchi\Src;
 
+use Mockery\CountValidator\Exception;
+
 class User
 {
     /**
-     * @var int
+     * @var string
      */
     protected $id;
     /**
@@ -34,6 +36,10 @@ class User
     {
         $this->repository = $repository;
 
+        if ($this->validateId($id) === false) {
+            throw new \Exception('invalid id!!');
+        }
+
         $this->id          = $id;
         $this->password    = $repository->encryptPassword($password);
         $this->name        = $name;
@@ -41,56 +47,12 @@ class User
         $this->description = $description;
     }
 
-    public function isAdult()
+    protected function validateId($id)
     {
-        return $this->age > 19;
-    }
+        if (preg_match('/^[a-z][a-z0-9_-]*$/', $id)) {
+            return true;
+        }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param mixed $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
+        return false;
     }
 }
