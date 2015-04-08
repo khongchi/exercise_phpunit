@@ -14,7 +14,7 @@ class UserRepositoryTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(true);
     }
 
-    public function testCreate()
+    public function testConstruct()
     {
         $encryptor = \Mockery::mock('Khongchi\Src\Encryptor');
 
@@ -43,25 +43,19 @@ class UserRepositoryTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * testInsertDuplicated
-     *
-     * @return void
+     * @depends testInsert
      * @expectedException \Exception
      */
-    public function testInsertDuplicated()
+    public function testInsertDuplicated($repository)
     {
         $user = \Mockery::mock('Khongchi\Src\User', [
             'getId' => 1,
         ]);
 
-        $this->repository->insert($user);
-        $this->repository->insert($user);
+        $repository->insert($user);
     }
 
     /**
-     * testGet
-     *
-     * @return void
      * @depends testInsert
      */
     public function testGet($repository)
