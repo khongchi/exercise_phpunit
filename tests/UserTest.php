@@ -7,7 +7,7 @@ use Khongchi\Src\UserRepository;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCreate()
+    public function testConstruct()
     {
         $repository = \Mockery::mock('Khongchi\Src\UserRepository', [
             'encryptPassword' => 'encryptedPassword'
@@ -21,7 +21,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideValidIds
      */
-    public function testCreateWithValidateId($id)
+    public function testConstructWithValidateId($id)
     {
         $repository = \Mockery::mock('Khongchi\Src\UserRepository', [
             'encryptPassword' => 'encryptedPassword'
@@ -42,21 +42,15 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider provideInvalidIds
+     * @expectedException \Exception
      */
-    public function testCreateWithInvalidateId($id)
+    public function testConstructWithInvalidateId($id)
     {
         $repository = \Mockery::mock('Khongchi\Src\UserRepository', [
             'encryptPassword' => 'encryptedPassword'
         ]);
 
-        try {
-            $user = new User($repository, $id, 'originPassword', 'khongchi', 19);
-        } catch (\Exception $e) {
-            $this->assertTrue(true);
-            return;
-        }
-
-        $this->assertFalse(true);
+        new User($repository, $id, 'originPassword', 'khongchi', 19);
     }
 
     public function provideInvalidIds()
